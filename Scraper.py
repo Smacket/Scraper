@@ -18,7 +18,7 @@ CHARACTERS = [
 
 
 def main():
-    browser = webdriver.Firefox()
+    browser = webdriver.Chrome()
     URL = "https://sf.vods.co/ultimate/character"
     
     for charA in CHARACTERS:
