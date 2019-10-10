@@ -2,11 +2,12 @@
 from selenium import webdriver
 from pyautogui import press, click
 import time
-from os import mkdir
-URL = "https://sf.vods.co/ultimate/character"
+import os
+URL = "https://sf.vods.co/ultimate/character/"
 CHARACTERS = [
     "Banjo",
-    "Bayonetta"
+    "Bayonetta",
+    "Mario"
 ]
 
 class VideoLink:
@@ -29,12 +30,13 @@ class VideoLink:
 #Fill this out
 def getScrotFromVideo(browser, videoLinks):
     newDir = "img/" + videoLinks.charA + videoLinks.charB
-    mkdir(newDir)
+    os.mkdir(newDir)
     for vidNum, link in enumerate(videoLinks.getLinks()):
         browser.get(link)
         youtubeExt = browser.find_element_by_xpath('//*[@id="g1"]').get_attribute('data-vod')
         browser.get('https://www.youtube.com/watch_popup?v=' + youtubeExt[:-1])
         click()
+        press('f')
         time.sleep(1)
         for i in range(5):
             for k in range(5):
@@ -56,6 +58,11 @@ def getVideoLinks(browser, charA, charB):
     return temp
 
 def main():
+    #folder clean-up
+    if os.path.exists('img/'):
+        os.system('rm -r img/')
+    os.mkdir('img/')
+    
     browser = webdriver.Chrome()
     relevantLinks = []
     for charA in CHARACTERS:
