@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 from selenium import webdriver
+from pyautogui import press, click
 import time
+from os import mkdir
 URL = "https://sf.vods.co/ultimate/character"
 CHARACTERS = [
     "Banjo",
-    "Bayonetta",
-    "Bowser",
-    "Bowser Jr."
+    "Bayonetta"
 ]
 
 class VideoLink:
@@ -27,9 +27,21 @@ class VideoLink:
             print(link, sep=", ", end="")
 
 #Fill this out
-def getScrotFromVideo(videoLinks):
-    pass
+def getScrotFromVideo(browser, videoLinks):
+    newDir = "img/" + videoLinks.charA + videoLinks.charB
+    mkdir(newDir)
+    for vidNum, link in enumerate(videoLinks.getLinks()):
+        browser.get(link)
+        youtubeExt = browser.find_element_by_xpath('//*[@id="g1"]').get_attribute('data-vod')
+        browser.get('https://www.youtube.com/watch_popup?v=' + youtubeExt[:-1])
+        click()
+        time.sleep(1)
+        for i in range(5):
+            for k in range(5):
+                press('l')
 
+            time.sleep(1)
+            browser.save_screenshot(newDir + "/" + videoLinks.charA + videoLinks.charB + str(vidNum) + str(i) + ".png")
 
 def getVideoLinks(browser, charA, charB):
     temp = VideoLink(charA, charB)
@@ -50,6 +62,7 @@ def main():
         for charB in CHARACTERS:
             relevantLinks = getVideoLinks(browser, charA, charB)
             relevantLinks.display()
+            getScrotFromVideo(browser, relevantLinks)
 
     browser.quit()
 
