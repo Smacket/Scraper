@@ -5,9 +5,77 @@ import time
 import os
 URL = "https://sf.vods.co/ultimate/character/"
 CHARACTERS = [
-    "Banjo",
-    "Bayonetta",
-    "Mario"
+    "Bowser",
+    "Bowser Jr.",
+    "Captain Falcon",
+    "Chrom",
+    "Cloud",
+    "Corrin",
+    "Daisy",
+    "Dark Pit",
+    "Dark Samus",
+    "Diddy Kong",
+    "Donkey Kong",
+    "Dr. Mario",
+    "Duck Hunt",
+    "Falco",
+    "Fox",
+    "Ganondorf",
+    "Greninja",
+    "Hero",
+    "Ice Climbers",
+    "Ike",
+    "Incineroar",
+    "Inkling",
+    "Isabelle",
+    "Jigglypuff",
+    "Joker",
+    "Ken",
+    "King Dedede",
+    "King K. Rool",
+    "Kirby",
+    "Link",
+    "Little Mac",
+    "Lucario",
+    "Lucas",
+    "Lucina",
+    "Luigi",
+    "Mario",
+    "Marth",
+    "Mega Man",
+    "Meta Knight",
+    "Mewtwo",
+    "Ness",
+    "Olimar",
+    "Pac-Man",
+    "Palutena",
+    "Peach",
+    "Pichu",
+    "Pikachu",
+    "Pirahna Plant",
+    "Pit",
+    "Pkemon Trainer",
+    #"Rob",
+    "Richter",
+    "Ridley",
+    "Robin",
+    #"Rosalina",
+    "Roy",
+    "Ryu",
+    "Samus",
+    "Sheik",
+    "Shulk",
+    "Simon",
+    "Snake",
+    "Sonic",
+    "Toon Link",
+    "Villager",
+    "Wario",
+    "Wolf",
+    "Yoshi",
+    "Young Link",
+    "Zelda",
+    "Zero Suit Samus"
 ]
 
 class VideoLink:
@@ -31,7 +99,7 @@ class VideoLink:
 def getScrotFromVideo(browser, videoLinks):
     newDir = "img/" + videoLinks.charA + videoLinks.charB
     os.mkdir(newDir)
-    for vidNum, link in enumerate(videoLinks.getLinks()):
+    for vidNum, link in enumerate(videoLinks.getLinks()[0:2]):
         browser.get(link)
         youtubeExt = browser.find_element_by_xpath('//*[@id="g1"]').get_attribute('data-vod')
         browser.get('https://www.youtube.com/watch_popup?v=' + youtubeExt[:-1])
@@ -39,10 +107,10 @@ def getScrotFromVideo(browser, videoLinks):
         press('f')
         time.sleep(1)
         for i in range(5):
-            for k in range(5):
+            for k in range(10):
                 press('l')
 
-            time.sleep(1)
+            time.sleep(0.5)
             browser.save_screenshot(newDir + "/" + videoLinks.charA + videoLinks.charB + str(vidNum) + str(i) + ".png")
 
 def getVideoLinks(browser, charA, charB):
@@ -65,8 +133,8 @@ def main():
     
     browser = webdriver.Chrome()
     relevantLinks = []
-    for charA in CHARACTERS:
-        for charB in CHARACTERS:
+    for charA in CHARACTERS[10:15]:
+        for charB in CHARACTERS[15:20]:
             relevantLinks = getVideoLinks(browser, charA, charB)
             relevantLinks.display()
             getScrotFromVideo(browser, relevantLinks)
